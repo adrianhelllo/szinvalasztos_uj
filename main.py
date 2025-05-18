@@ -3,17 +3,36 @@ import random
 clrs = ('red', 'blue', 'green', 'yellow', 'purple')
 
 def ask_input():
-    gses = input("Input your list of colors here [clr1, clr2, ... clr5]: ")
-    gsed_clrs = gses.split()
+    gsed_clrs = [input(f"Enter your {i + 1}. guessed color here: ") for i in range(len(clrs))]
 
-    while len(gsed_clrs) != 5:
+    while len(gsed_clrs) != 5 or not all(clr in gsed_clrs for clr in clrs):
         print("Invalid input, try again.")
-        gses = input("Input your list of colors here [clr1, clr2, ... clr5]: ")
+        print(gsed_clrs)
+        gsed_clrs = [input(f"Enter your {i + 1}. guessed color here: ") for i in range(len(clrs))]
     
     return gsed_clrs
 
-def compare_input(gsed: list[str]):
+def is_correct(gsed: list[str], picked: list[str]):
+    res = []
+
+
+    if gsed != picked:
+        for clr in gsed:
+            if clr in picked:
+                if gsed[clr] == picked[clr]:
+                    res.append('🟢')
+                else:
+                    res.append('🟡')
+            else:
+                res.append('⚪')
+        return res
+    else:
+        return True
+
+
     
+
+
 
 
 def main():
@@ -21,6 +40,14 @@ def main():
     print(clrs_picked)
 
     gsed_clrs = ask_input()
+
+    while not is_correct(gsed_clrs, clrs_picked):
+        print(is_correct)
+    
+    print("Eltaláltad, nyertél!")
+
+
+
 
 
 if __name__ == '__main__':
