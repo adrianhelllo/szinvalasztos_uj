@@ -13,20 +13,27 @@ def ask_input():
     return gsed_clrs
 
 def is_correct(gsed: list[str], picked: list[str]):
-    res = []
-
-    if gsed != picked:
-        for i in range(len(gsed)):
-            if gsed[i] in picked:
-                if gsed[i] == picked[i]:
-                    res.append('🟢')
-                else:
-                    res.append('🟡')
-            else:
-                res.append('⚪')
-        return res
-    else:
+    if gsed == picked:
         return True
+    
+    res = [''] * len(gsed)
+    p_cp = picked.copy()
+
+    for i in range(len(gsed)):
+        if gsed[i] == picked[i]:
+            res[i] = '🟢'
+            p_cp[i] = None
+    
+    for i in range(len(gsed)):
+        if res[i] == '':
+            if gsed[i] in picked:
+                res[i] = '🟡'
+                p_cp[p_cp.index(gsed[i])] = None
+            else:
+                res[i] = '⚪'
+
+    return res
+    
 
 def main():
     playing = True
@@ -36,9 +43,11 @@ def main():
     while playing:
         gsed_clrs = ask_input()
         output = is_correct(gsed_clrs, clrs_picked)
-        if output:
+        if output is True:
             print("Eltaláltad, nyertél!")
             playing = False
+        else:
+            print(output)
 
 if __name__ == '__main__':
     main()
